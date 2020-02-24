@@ -5,8 +5,8 @@ import (
 	"math"
 	"sync"
 
-	"github.com/gomidi/connect"
-	"github.com/gomidi/rtmididrv/imported/rtmidi"
+	"github.com/LanVukusic/connect"
+	"github.com/LanVukusic/rtmididrv/imported/rtmidi"
 	//	"github.com/metakeule/mutex"
 )
 
@@ -111,7 +111,7 @@ func newIn(debug bool, driver *driver, number int, name string) connect.In {
 }
 
 // SetListener makes the listener listen to the in port
-func (i *in) SetListener(listener func(data []byte, deltaMicroseconds int64)) (err error) {
+func (i *in) SetListener(listener func(data []byte, deltaMicroseconds int64, id int)) (err error) {
 	i.RLock()
 	if i.closed || i.midiIn == nil {
 		i.RUnlock()
@@ -131,7 +131,8 @@ func (i *in) SetListener(listener func(data []byte, deltaMicroseconds int64)) (e
 	// and set the callback non blocking
 	go i.midiIn.SetCallback(func(_ rtmidi.MIDIIn, bt []byte, deltaSeconds float64) {
 		// we want deltaMicroseconds as int64
-		listener(bt, int64(math.Round(deltaSeconds*1000000)))
+		// added number identifier to supportm ultiple MIDI device readout
+		listener(bt, int64(math.Round(deltaSeconds*1000000)), i.Number())
 	})
 
 	/*

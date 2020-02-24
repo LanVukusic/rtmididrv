@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/gomidi/connect"
-	"github.com/gomidi/rtmididrv/imported/rtmidi"
+	"github.com/LanVukusic/connect"
+	"github.com/LanVukusic/rtmididrv/imported/rtmidi"
 	//	"github.com/metakeule/mutex"
 )
 
